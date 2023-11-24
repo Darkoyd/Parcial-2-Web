@@ -4,6 +4,7 @@ import { AlbumEntity } from './album.entity/album.entity';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { faker } from '@faker-js/faker';
+import { TypeOrmTestingConfig } from '../shared/testing-utils/typeorm-testing-config';
 
 describe('AlbumService', () => {
   let service: AlbumService;
@@ -12,6 +13,7 @@ describe('AlbumService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [...TypeOrmTestingConfig()],
       providers: [AlbumService],
     }).compile();
 
@@ -45,6 +47,8 @@ describe('AlbumService', () => {
       caratula: faker.image.url(),
       fechaLanzamiento: faker.date.past(),
       desc: faker.lorem.lines(),
+      performers: [],
+      tracks: [],
     };
 
     const inserted = await service.create(newAlbum);

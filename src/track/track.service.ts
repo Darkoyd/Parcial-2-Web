@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { AlbumEntity } from 'src/album/album.entity/album.entity';
+import { AlbumEntity } from '../album/album.entity/album.entity';
 import {
   BusinessLogicException,
   BusinessError,
-} from 'src/shared/errors/business-errors';
+} from '../shared/errors/business-errors';
 import { TrackEntity } from './track.entity/track.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

@@ -1,5 +1,5 @@
-import { PerformerEntity } from 'src/performer/performer.entity/performer.entity';
-import { TrackEntity } from 'src/track/track.entity/track.entity';
+import { PerformerEntity } from '../../performer/performer.entity/performer.entity';
+import { TrackEntity } from '../../track/track.entity/track.entity';
 import {
   Entity,
   Column,

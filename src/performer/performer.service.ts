@@ -5,8 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   BusinessLogicException,
   BusinessError,
-} from 'src/shared/errors/business-errors';
-import { AlbumEntity } from 'src/album/album.entity/album.entity';
+} from '../shared/errors/business-errors';
+import { AlbumEntity } from '../album/album.entity/album.entity';
 
 @Injectable()
 export class PerformerService {
