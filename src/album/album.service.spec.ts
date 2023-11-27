@@ -40,7 +40,7 @@ describe('AlbumService', () => {
     }
   };
 
-  it('Should create a new album', async () => {
+  it('should create a new album', async () => {
     const newAlbum: AlbumEntity = {
       id: '',
       nombre: faker.lorem.word(),
@@ -53,6 +53,56 @@ describe('AlbumService', () => {
 
     const inserted = await service.create(newAlbum);
     expect(inserted).not.toBeNull();
+  });
+  it('should throw an error when creating a new album', async () => {
+    const newAlbum: AlbumEntity = {
+      id: '',
+      nombre: faker.lorem.word(),
+      caratula: faker.image.url(),
+      fechaLanzamiento: faker.date.past(),
+      desc: '',
+      performers: [],
+      tracks: [],
+    };
+
+    const inserted = await service.create(newAlbum);
+    expect(inserted).toBeNull();
+  });
+
+  it('should return 10 albums', async () => {
+    const albums = await service.findAll();
+    expect(albums.length).toEqual(10);
+  });
+
+  it('should retrieve the first album', async () => {
+    const album = await service.findOne(albumList[0].id);
+
+    expect(album).not.toBeNull();
+    expect(album.id).toEqual(albumList[0].id);
+  });
+
+  it('should not retrieve any album', async () => {
+    const album = await service.findOne('id invalido');
+
+    expect(album).toBeNull();
+  });
+
+  it('should delete the album', async () => {
+    const album = albumList.pop();
+
+    await service.delete(album.id);
+
+    const retireved = await service.findAll();
+
+    expect(retireved.length).toEqual(9);
+  });
+
+  it('should not delete any album', async () => {
+    await service.delete('id invalido');
+
+    const retireved = await service.findAll();
+
+    expect(retireved.length).toEqual(9);
   });
 
   it('should be defined', () => {
