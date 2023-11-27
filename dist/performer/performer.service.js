@@ -18,11 +18,9 @@ const performer_entity_1 = require("./performer.entity/performer.entity");
 const typeorm_1 = require("typeorm");
 const typeorm_2 = require("@nestjs/typeorm");
 const business_errors_1 = require("../shared/errors/business-errors");
-const album_entity_1 = require("../album/album.entity/album.entity");
 let PerformerService = class PerformerService {
-    constructor(performerRepository, albumRepository) {
+    constructor(performerRepository) {
         this.performerRepository = performerRepository;
-        this.albumRepository = albumRepository;
     }
     async create(performer) {
         if (performer.desc.length > 100) {
@@ -31,7 +29,11 @@ let PerformerService = class PerformerService {
         return await this.performerRepository.save(performer);
     }
     async findOne(id) {
-        const performer = this.performerRepository.findOne({ where: { id } });
+        const performer = await this.performerRepository.findOne({
+            where: { id },
+            relations: ['albums'],
+        });
+        console.log(performer);
         if (!performer) {
             throw new business_errors_1.BusinessLogicException('Performer was not found', business_errors_1.BusinessError.NOT_FOUND);
         }
@@ -40,31 +42,11 @@ let PerformerService = class PerformerService {
     async findAll() {
         return await this.performerRepository.find();
     }
-    async addPerformerToAlbum(albumId, performerId) {
-        const album = await this.albumRepository.findOne({
-            where: { id: albumId },
-        });
-        if (!album) {
-            throw new business_errors_1.BusinessLogicException('Album was not found', business_errors_1.BusinessError.NOT_FOUND);
-        }
-        const performer = this.performerRepository.findOne({
-            where: { id: performerId },
-        });
-        if (!performer) {
-            throw new business_errors_1.BusinessLogicException('Performer was not found', business_errors_1.BusinessError.NOT_FOUND);
-        }
-        if (album.performers.length > 3) {
-            throw new business_errors_1.BusinessLogicException('Album cannot have more than 3 performers', business_errors_1.BusinessError.PRECONDITION_FAILED);
-        }
-        return performer;
-    }
 };
 exports.PerformerService = PerformerService;
 exports.PerformerService = PerformerService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_2.InjectRepository)(performer_entity_1.PerformerEntity)),
-    __param(1, (0, typeorm_2.InjectRepository)(album_entity_1.AlbumEntity)),
-    __metadata("design:paramtypes", [typeorm_1.Repository,
-        typeorm_1.Repository])
+    __metadata("design:paramtypes", [typeorm_1.Repository])
 ], PerformerService);
 //# sourceMappingURL=performer.service.js.map

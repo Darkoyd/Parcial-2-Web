@@ -65,8 +65,10 @@ describe('AlbumService', () => {
       tracks: [],
     };
 
-    const inserted = await service.create(newAlbum);
-    expect(inserted).toBeNull();
+    await expect(service.create(newAlbum)).rejects.toHaveProperty(
+      'message',
+      'Album description cannot be empty',
+    );
   });
 
   it('should return 10 albums', async () => {
@@ -82,9 +84,10 @@ describe('AlbumService', () => {
   });
 
   it('should not retrieve any album', async () => {
-    const album = await service.findOne('id invalido');
-
-    expect(album).toBeNull();
+    await expect(service.findOne('id invalido')).rejects.toHaveProperty(
+      'message',
+      'Album was not found',
+    );
   });
 
   it('should delete the album', async () => {
@@ -98,11 +101,10 @@ describe('AlbumService', () => {
   });
 
   it('should not delete any album', async () => {
-    await service.delete('id invalido');
-
-    const retireved = await service.findAll();
-
-    expect(retireved.length).toEqual(9);
+    await expect(service.delete('id invalido')).rejects.toHaveProperty(
+      'message',
+      'Album was not found',
+    );
   });
 
   it('should be defined', () => {

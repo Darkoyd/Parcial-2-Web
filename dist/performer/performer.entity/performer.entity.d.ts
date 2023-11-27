@@ -1,4 +1,4 @@
-import { AlbumEntity } from 'src/album/album.entity/album.entity';
+import { AlbumEntity } from '../../album/album.entity/album.entity';
 export declare class PerformerEntity {
     id: string;
     nombre: string;

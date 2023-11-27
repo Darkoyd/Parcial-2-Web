@@ -1,4 +1,4 @@
-import { AlbumEntity } from 'src/album/album.entity/album.entity';
+import { AlbumEntity } from '../album/album.entity/album.entity';
 import { TrackEntity } from './track.entity/track.entity';
 import { Repository } from 'typeorm';
 export declare class TrackService {

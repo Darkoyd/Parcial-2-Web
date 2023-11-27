@@ -30,7 +30,7 @@ __decorate([
 ], AlbumEntity.prototype, "caratula", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Date)
+    __metadata("design:type", String)
 ], AlbumEntity.prototype, "fechaLanzamiento", void 0);
 __decorate([
     (0, typeorm_1.Column)(),

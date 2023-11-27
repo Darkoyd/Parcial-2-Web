@@ -7,9 +7,10 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableVersioning({
         type: common_1.VersioningType.URI,
-        prefix: 'api/v1',
+        prefix: 'api/v',
         defaultVersion: '1',
     });
+    app.useGlobalPipes(new common_1.ValidationPipe());
     await app.listen(3000);
 }
 bootstrap();

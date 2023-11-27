@@ -6,12 +6,15 @@ import {
   BusinessError,
   BusinessLogicException,
 } from '../shared/errors/business-errors';
+import { PerformerEntity } from '../performer/performer.entity/performer.entity';
 
 @Injectable()
 export class AlbumService {
   constructor(
     @InjectRepository(AlbumEntity)
     private readonly albumRepository: Repository<AlbumEntity>,
+    @InjectRepository(PerformerEntity)
+    private readonly performerRepository: Repository<PerformerEntity>,
   ) {}
 
   async create(album: AlbumEntity): Promise<AlbumEntity> {
@@ -33,6 +36,7 @@ export class AlbumService {
   async findOne(id: string): Promise<AlbumEntity> {
     const album = await this.albumRepository.findOne({
       where: { id },
+      relations: ['performers'],
     });
 
     if (!album) {
@@ -67,5 +71,40 @@ export class AlbumService {
     }
 
     await this.albumRepository.remove(album);
+  }
+
+  async addPerformerToAlbum(albumId: string, performerId: string) {
+    const album = await this.albumRepository.findOne({
+      where: { id: albumId },
+      relations: ['performers'],
+    });
+    if (!album) {
+      throw new BusinessLogicException(
+        'Album was not found',
+        BusinessError.NOT_FOUND,
+      );
+    }
+
+    const performer = await this.performerRepository.findOne({
+      where: { id: performerId },
+      relations: ['albums'],
+    });
+    if (!performer) {
+      throw new BusinessLogicException(
+        'Performer was not found',
+        BusinessError.NOT_FOUND,
+      );
+    }
+
+    if (album.performers.length > 3) {
+      throw new BusinessLogicException(
+        'Album cannot have more than 3 performers',
+        BusinessError.PRECONDITION_FAILED,
+      );
+    }
+
+    album.performers.push(performer);
+
+    return await this.albumRepository.save(album);
   }
 }

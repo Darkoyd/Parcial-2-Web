@@ -11,14 +11,15 @@ const common_1 = require("@nestjs/common");
 const performer_service_1 = require("./performer.service");
 const performer_entity_1 = require("./performer.entity/performer.entity");
 const typeorm_1 = require("@nestjs/typeorm");
-const album_entity_1 = require("../album/album.entity/album.entity");
+const performer_controller_1 = require("./performer.controller");
 let PerformerModule = class PerformerModule {
 };
 exports.PerformerModule = PerformerModule;
 exports.PerformerModule = PerformerModule = __decorate([
     (0, common_1.Module)({
         providers: [performer_service_1.PerformerService],
-        imports: [typeorm_1.TypeOrmModule.forFeature([performer_entity_1.PerformerEntity, album_entity_1.AlbumEntity])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([performer_entity_1.PerformerEntity])],
+        controllers: [performer_controller_1.PerformerController],
     })
 ], PerformerModule);
 //# sourceMappingURL=performer.module.js.map
